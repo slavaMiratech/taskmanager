@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 public class SayServiceImpl implements SayService {
     private Logger log = LoggerFactory.getLogger(SayServiceImpl.class);
 
+    /**
+     * Greeting will be taken from configuration.properties
+     */
     @Value("${playground.greeting}")
     private String greeting;
 
