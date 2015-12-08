@@ -1,6 +1,7 @@
 package com.miratech.service;
 
 /**
+ * Test service for greeting
  * Created by Roman Zolotarov on 9/10/15.
  */
 public interface SayService {
