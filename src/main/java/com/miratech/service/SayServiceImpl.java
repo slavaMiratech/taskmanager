@@ -23,4 +23,8 @@ public class SayServiceImpl implements SayService {
         log.info("Generated greeting for " + name + " : " + generatedGreeting);
         return generatedGreeting;
     }
+
+    public String sayBye(final String name) {
+        return "Goodbye, " + name + "!";
+    }
 }
