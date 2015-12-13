@@ -21,16 +21,6 @@ public class SayServiceImpl implements SayService {
     public String sayHello(final String name) {
         String generatedGreeting = greeting + ", " + name + "!";
         log.info("Generated greeting for " + name + " : " + generatedGreeting);
-        // This is test comment
-        System.out.println("blah blah");
-       
-        for (int i = 0; i < 10; i++) {
-            log.info("test");
-        }
-
-		System.out.println("blah blah");
-        System.out.println("blah blah");
-
         return generatedGreeting;
     }
 
