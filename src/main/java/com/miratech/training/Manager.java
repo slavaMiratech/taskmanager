@@ -23,4 +23,5 @@ public interface Manager {
 
     void waitTaskComplete(Task task);
     void waitEmployee(Employee emp);
+    //
 }
