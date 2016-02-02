@@ -1,5 +1,6 @@
 package com.miratech.training;
 
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -7,11 +8,11 @@ import java.util.Date;
  */
 public interface Task {
     String getTaskID();
-    void setTaskID(String taskID);
     Status getStatus();
     void setStatus(Status status);
-    Employee getAssignee();
+    Collection<Employee> getAssignee();
     void setAssignee(Employee assignee);
+    void removeAssignee(Employee assignee);
     Priority getPriority();
     void setPriority(Priority priority);
     String getDescription();
