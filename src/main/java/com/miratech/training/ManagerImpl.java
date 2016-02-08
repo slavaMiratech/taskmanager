@@ -1,5 +1,8 @@
 package com.miratech.training;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,6 +10,8 @@ import java.util.List;
  * Created by MaksimPs on 28.01.2016.
  */
 public class ManagerImpl implements Manager {
+    private Logger log = LoggerFactory.getLogger(ManagerImpl.class);
+
     List<Task> tasks = new LinkedList<>();
     List<Employee> emps = new LinkedList<>();
 
@@ -28,6 +33,7 @@ public class ManagerImpl implements Manager {
         maxId++;
         this.id = maxId;
         this.name = "Manager " + this.id;
+        log.debug(name + " has created");
     }
 
     public ManagerImpl(String name) {
@@ -37,17 +43,21 @@ public class ManagerImpl implements Manager {
 
     // добавить задачу менеджеру
     public void assignTask(Task task){
+        log.debug("Assign task \"" + task.getDescription() + "\"");
         tasks.add(task);
     }
 
     // удалить задачу из списка задач
     public void removeTask(Task task) {
+        log.debug("Remove task \"" + task.getDescription() + "\"");
         tasks.remove(task);
     }
 
     // удалить все задачи
     public void removeAllTasks() {
+        log.debug("Removing all tasks");
         tasks.clear();
+        log.debug("All tasks have  removed");
     }
 
     // получить все задачи
@@ -57,11 +67,13 @@ public class ManagerImpl implements Manager {
 
     // нанять сотрудника в проект
     public void hireEmployee(Employee emp){
+        log.debug("Add " + emp);
         emps.add(emp);
     }
 
     // убрать сотрудника из проекта
     public void fireEmployee(Employee emp){
+        log.debug("Remove " + emp);
         emps.remove(emp);
     }
 
