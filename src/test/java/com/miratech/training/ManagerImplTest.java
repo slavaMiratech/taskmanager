@@ -25,6 +25,7 @@ public class ManagerImplTest {
     @Test
     public void testAddRemoveTask() throws Exception {
         Task task = new TaskImpl();//("task1", "summ", "descr", Priority.MAJOR, 10, new Date());
+        task.setDescription("TestTask");
         Assert.assertNotNull(task);
         manager.assignTask(task);
         Assert.assertTrue(manager.getTaskList().contains(task));

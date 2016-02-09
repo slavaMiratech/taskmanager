@@ -41,7 +41,7 @@ public class ManagerImpl implements Manager {
         this.id = maxId;
         this.name = name;
         this.name = this.name.replaceAll(":ID", this.id.toString());
-        log.info("Manager " + this.name + " has created");
+        log.info("Manager " + this.name + " has created\n");
     }
 
     // добавить задачу менеджеру
@@ -67,7 +67,9 @@ public class ManagerImpl implements Manager {
     @Override
     public void removeAllTasks() {
         log.info("Removing all tasks");
-        tasks.clear();
+        synchronized (this) {
+            tasks.clear();
+        }
         log.info("All tasks have removed");
     }
 
@@ -76,7 +78,7 @@ public class ManagerImpl implements Manager {
     public List<Task> getTaskList(){
         List<Task> list = new ArrayList<>();
         synchronized (this) {
-            Collections.copy(list, tasks);
+            list = Collections.unmodifiableList(tasks);
         }
         return tasks;
     }
