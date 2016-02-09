@@ -2,6 +2,7 @@ package com.miratech.training;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by vsytnyk on 17.12.2015.
@@ -28,8 +29,8 @@ public interface Task {
     String getDescription();
     void setDescription(String newDescrioption);
 
-    void setSupervisor(Manager manager);
-    Manager getSupervisor();
+    void addSupervisors(List<Manager> managers);
+    List<Manager> getSupervisors();
 
     void setEstimate(long seconds);
     long getEstimate();

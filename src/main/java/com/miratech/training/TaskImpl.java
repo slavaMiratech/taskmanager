@@ -1,6 +1,7 @@
 package com.miratech.training;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,21 +12,27 @@ import java.util.List;
  * Created by VSytnyk on 28.01.2016.
  */
 public class TaskImpl implements Task {
+    Logger log = LoggerFactory.getLogger(TaskImpl.class);
 
+    private Calendar deadline;
+    private String description;
     private boolean isCompleted = false;
     private TaskStatus status;
     private TaskPriority priority;
-    List<TaskComment> taskComments = new ArrayList<>();
-    List<Employee> employees = new ArrayList<>();
+    List<TaskComment> taskComments = new ArrayList<TaskComment>();
+    List<Employee> employees = new ArrayList<Employee>();
+    List<Manager> managers = new ArrayList<Manager>();
+    private Calendar startDate;
+    private long estimate;
 
     @Override
     public void startWorkOnTask() {
-        System.out.println("Start work on task :)");
+        log.info("Start work on task");
     }
 
     @Override
     public void stopWorkOnTask() {
-
+        log.info("Stop work on task");
     }
 
     @Override
@@ -40,7 +47,7 @@ public class TaskImpl implements Task {
 
     @Override
     public TaskStatus getStatus() {
-        return null;
+        return status;
     }
 
     @Override
@@ -50,7 +57,7 @@ public class TaskImpl implements Task {
 
     @Override
     public TaskPriority getPriority() {
-        return null;
+        return priority;
     }
 
     @Override
@@ -100,51 +107,51 @@ public class TaskImpl implements Task {
 
     @Override
     public String getDescription() {
-        return null;
+        return description;
     }
 
     @Override
     public void setDescription(String newDescrioption) {
-
+        description = newDescrioption;
     }
 
     @Override
-    public void setSupervisor(Manager manager) {
-
+    public void addSupervisors(List<Manager> managers) {
+        this.managers.addAll(managers);
     }
 
     @Override
-    public Manager getSupervisor() {
-        return null;
+    public List<Manager> getSupervisors() {
+        return managers;
     }
 
     @Override
     public void setEstimate(long seconds) {
-
+        this.estimate = seconds;
     }
 
     @Override
     public long getEstimate() {
-        return 0;
+        return estimate;
     }
 
     @Override
     public void setDeadline(Calendar date) {
-
+        deadline = date;
     }
 
     @Override
     public Calendar getDeadline() {
-        return null;
+        return deadline;
     }
 
     @Override
     public void setStartDate(Calendar startDate) {
-
+        this.startDate = startDate;
     }
 
     @Override
     public Calendar getStartDate() {
-        return null;
+        return startDate;
     }
 }
