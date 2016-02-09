@@ -34,7 +34,7 @@ public class ManagerImplTest {
 
     @Test
     public void testAddRemoveEmployee() throws Exception {
-        Employee emp = new Employee() {};
+        Employee emp = new EmployeeImp();
         Assert.assertNotNull(emp);
         manager.hireEmployee(emp);
         Assert.assertTrue(manager.getEmployeeList().contains(emp));
