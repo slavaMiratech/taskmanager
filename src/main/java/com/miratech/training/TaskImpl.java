@@ -1,5 +1,7 @@
 package com.miratech.training;
 
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -11,12 +13,14 @@ import java.util.List;
 public class TaskImpl implements Task {
 
     private boolean isCompleted = false;
+    private TaskStatus status;
+    private TaskPriority priority;
     List<TaskComment> taskComments = new ArrayList<>();
     List<Employee> employees = new ArrayList<>();
 
     @Override
     public void startWorkOnTask() {
-
+        System.out.println("Start work on task :)");
     }
 
     @Override
@@ -31,7 +35,7 @@ public class TaskImpl implements Task {
 
     @Override
     public void setStatus(TaskStatus newStatus) {
-
+        status = newStatus;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class TaskImpl implements Task {
 
     @Override
     public void setPriority(TaskPriority priority) {
-
+        this.priority = priority;
     }
 
     @Override
