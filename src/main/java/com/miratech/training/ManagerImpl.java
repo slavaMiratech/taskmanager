@@ -17,6 +17,14 @@ public class ManagerImpl implements Manager {
     List<Task> tasks = new LinkedList<>();
     List<Employee> emps = new LinkedList<>();
 
+    // Для поддержки статусов нужны перечисления (enum), а не интерфейсы.
+    // Интерфейсы не содержат состояния
+    public static final TaskStatus taskInProcess = new TaskStatus() { /* InProcess */};
+    public static final TaskStatus taskCompleted = new TaskStatus() { /* Completed */};
+
+    public static EmployeeStatus employeeIsBusy = new EmployeeStatus() { /* Busy */};
+    public static EmployeeStatus employeeIsFree = new EmployeeStatus() { /* Free */};
+
     static int maxId = 0;
 
     Integer id;
@@ -76,53 +84,65 @@ public class ManagerImpl implements Manager {
     // получить все задачи
     @Override
     public List<Task> getTaskList(){
-        List<Task> list = new ArrayList<>();
         synchronized (this) {
-            list = Collections.unmodifiableList(tasks);
+            return Collections.unmodifiableList(tasks);
         }
-        return tasks;
     }
 
     // нанять сотрудника в проект
     @Override
     public void hireEmployee(Employee emp){
-        log.info("Hire " + emp);
-        emp.setManager(this);
-        emps.add(emp);
+        log.info("Hire employee " + emp);
+        synchronized (this) {
+            emps.add(emp);
+            emp.setManager(this);
+        }
     }
 
     // убрать сотрудника из проекта
     @Override
     public void fireEmployee(Employee emp){
-        log.info("Fire " + emp);
-        emps.remove(emp);
-        emp.setManager(null);
+        log.info("Fire employee " + emp);
+        synchronized (this) {
+            emp.setManager(null);
+            emps.remove(emp);
+        }
     }
 
     // список сотрудников в проекте
     @Override
     public List<Employee> getEmployeeList(){
-        return emps;
+        synchronized (this) {
+            return Collections.unmodifiableList(emps);
+        }
     }
 
     // назначить задачу сотруднику
-    private void assignTaskToEmployee(Task task, Employee emp){
-        emp.action(task, new EmployeeTaskAction() {/*FORWARD*/});
+    @Override
+    public void assignTaskToEmployee(Task task, Employee emp){
+        log.info("Assign task \"" + task.getDescription() + "\" to employee " + emp);
+        emp.action(task, new EmployeeTaskAction() {/*SET*/});
     }
 
     // забрать задачу у сотрудника
-    private void removeTaskFromEmployee(Task task, Employee emp){
-        emp.action(task, new EmployeeTaskAction() {/*CLOSE*/});
+    @Override
+    public void removeTaskFromEmployee(Task task, Employee emp){
+        log.info("Remove task \"" + task.getDescription() + "\" from employee " + emp);
+        emp.action(task, new EmployeeTaskAction() {/*REMOVE*/});
     }
 
     // свободен ли сотрудник
     private boolean isEmployeeFree(Employee emp){
-        return emp.getEmployeeStatus().equals(EmployeeStatus.FREE);
+        synchronized (emp) {
+            return employeeIsFree.equals(emp.getEmployeeStatus());
+        }
     }
 
     // получить статус задачи
     private TaskStatus getTaskStatus(Task task){
-        return task.getStatus();
+        synchronized (task) {
+            return task.getStatus();
+        }
     }
 
     // ожидать завершения задачи
@@ -130,21 +150,22 @@ public class ManagerImpl implements Manager {
     public void waitTaskComplete(Task task){
         synchronized (this) {
             if (!tasks.contains(task)) {
-                log.info("Task " + task.getDescription() + " is not  in my task list.");
+                log.info("Task " + task.getDescription() + " is not in my task list.");
                 return;
             }
         }
 
-        synchronized (task) {
-            try {
-                while(!getTaskStatus(task).equals(TaskStatus.STATUS_CLOSED)) {
-                    log.info("Waiting a task when it is closed. Smoking...");
-                    task.wait();
-                }
-            } catch (InterruptedException e) {
-                log.info("waitTaskComplete interrupted...");
-                e.printStackTrace();
+        try {
+            while(!taskCompleted.equals(getTaskStatus(task))) {
+                log.info("Waiting a task " + task.getDescription() + " when it is closed. Smoking...");
+                //task.wait();
+                Thread.sleep(1000);
             }
+
+            log.info("A task " + task.getDescription() + " has completed.");
+        } catch (InterruptedException e) {
+            log.info("waitTaskComplete interrupted...");
+            e.printStackTrace();
         }
 
         removeTask(task);
@@ -159,15 +180,17 @@ public class ManagerImpl implements Manager {
                 return;
             }
         }
-        synchronized (emp) {
-            try {
-                while (!isEmployeeFree(emp)) {
-                    log.info("Waiting an employee when he is free. Smoking...");
-                    emp.wait();
-                }
-            } catch (InterruptedException e) {
-                log.info("waitEmployee interrupted...");
+
+        try {
+            while (!isEmployeeFree(emp)) {
+                log.info("Waiting an employee " + emp + " when he is free. Smoking...");
+                //emp.wait();
+                Thread.sleep(1000);
             }
+
+            log.info("An employee " + emp + " is free now.");
+        } catch (InterruptedException e) {
+            log.info("waitEmployee interrupted...");
         }
     }
 }

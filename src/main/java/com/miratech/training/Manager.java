@@ -18,8 +18,8 @@ public interface Manager {
     void fireEmployee(Employee emp);
     List<Employee> getEmployeeList();
 
-//    void assignTaskToEmployee(Task task, Employee emp);
-//    void removeTaskFromEmployee(Task task, Employee emp);
+    void assignTaskToEmployee(Task task, Employee emp);
+    void removeTaskFromEmployee(Task task, Employee emp);
 
 //    boolean isEmployeeFree(Employee emp);
 //    Integer getTaskStatus(Task task);
