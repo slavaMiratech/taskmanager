@@ -17,8 +17,11 @@ public class ManagerImpl implements Manager {
     List<Task> tasks = new LinkedList<>();
     List<Employee> emps = new LinkedList<>();
 
-    // Для поддержки статусов нужны перечисления (enum), а не интерфейсы.
+    // Для поддержки статусов нужны перечисления (enum).
+    // К сожалению, для TaskStatus и EmployeeStatus коллеги использовали интерфейсы, а не перечисления (enum)
     // Интерфейсы не содержат состояния
+    // Для тестирования выкручиваемся так:
+    //    В качестве хранения состояния используем объекты-метки (mark) на основании анонимных классов, наследуемых от требуемых интерфейсов
     public static final TaskStatus taskInProcess = new TaskStatus() { /* InProcess */};
     public static final TaskStatus taskCompleted = new TaskStatus() { /* Completed */};
 
