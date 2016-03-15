@@ -49,38 +49,74 @@ public class ManagerImplTest {
 
     @Test
     public void testWaitTaskComplete() throws Exception {
-        Task task = new TaskImpl();
+        final Task task = new TaskImpl();
         task.setDescription("TestTask");
 
-        Employee emp = new EmployeeImp();
+        // Чужой класс EmployeeImp прописан не полностью
+        // Чтобы проверить тестирование - воспользуемся анонимным классом-потомком с необходимыми реализованными методами
+        final Employee emp = new EmployeeImp() {
+            EmployeeStatus status;
+            @Override
+            public EmployeeStatus getEmployeeStatus() {
+                return status;
+            }
+
+            @Override
+            public void setEmployeeStatus(EmployeeStatus employeeStatus) { status = employeeStatus; };
+        };
+
+        // Создаем работника
         emp.setEmployee(
                 new Properties() { { setProperty("name", "TestEmployee"); setProperty("mainLanguage", "Java"); } });
 
+        // Менеджер нанимает работника
         manager.hireEmployee(emp);
         Assert.assertTrue(manager.getEmployeeList().contains(emp));
 
+        // Менеджер получает задачу
         manager.assignTask(task);
         Assert.assertTrue(manager.getTaskList().contains(task));
 
+        // И поручает эту задачу работнику
         manager.assignTaskToEmployee(task, emp);
 
+        // Задача в процессе
         task.setStatus(ManagerImpl.taskInProcess);
+        // Pаботник загружен работой
         emp.setEmployeeStatus(ManagerImpl.employeeIsBusy);
 
-//        (new Thread() { public void run() { manager.waitTaskComplete(task);}}).start();
-        new Thread( ()->{ manager.waitTaskComplete(task); }).start();
-//        (new Thread() { public void run() { manager.waitEmployee(emp);}}).start();
-        new Thread( ()->{ manager.waitEmployee(emp); }).start();
+        // Запускаем поток на ожидание, когда завершится задача
+        (new Thread( new Runnable() {
+            @Override
+            public void run() {
+                manager.waitTaskComplete(task);
+            }
+        })).start();
+//        new Thread( ()->{ manager.waitTaskComplete(task); }).start();
 
+        // Запускаем второй поток на ожидание, когда освободится работник
+        (new Thread( new Runnable() {
+            @Override
+            public void run() {
+                manager.waitEmployee(emp);
+            }
+        })).start();
+//        new Thread( ()->{ manager.waitEmployee(emp); }).start();
+
+        // работник выполняет задачу - менеджер в ожидании
         sleep(5000);
+        // задача выполнена
         task.setStatus(ManagerImpl.taskCompleted);
-        sleep(2000);
         emp.setEmployeeStatus(ManagerImpl.employeeIsFree);
+        // подчищаем хвосты
+        sleep(1000);
         manager.removeTaskFromEmployee(task, emp);
 
+        // удаляем задание
         manager.removeTask(task);
         Assert.assertFalse(manager.getTaskList().contains(task));
 
+        // заданий больше нет, увольняем работника
         manager.fireEmployee(emp);
         Assert.assertFalse(manager.getEmployeeList().contains(emp));
     }
