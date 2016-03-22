@@ -86,6 +86,13 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>2.6.1</version>
+        </dependency>
+
+
 
     </dependencies>
 

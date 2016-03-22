@@ -1,5 +1,7 @@
 package com.miratech.training;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,8 +15,9 @@ import java.util.List;
  */
 public class ManagerImpl implements Manager {
     private Logger log = LoggerFactory.getLogger(ManagerImpl.class);
-
+@JsonIgnore
     List<Task> tasks = new LinkedList<>();
+    @JsonIgnore
     List<Employee> emps = new LinkedList<>();
 
     // Для поддержки статусов нужны перечисления (enum).
@@ -25,12 +28,14 @@ public class ManagerImpl implements Manager {
     public static final TaskStatus taskInProcess = new TaskStatus() { /* InProcess */};
     public static final TaskStatus taskCompleted = new TaskStatus() { /* Completed */};
 
+
     public static EmployeeStatus employeeIsBusy = new EmployeeStatus() { /* Busy */};
     public static EmployeeStatus employeeIsFree = new EmployeeStatus() { /* Free */};
 
     static int maxId = 0;
-
+    @JsonProperty
     Integer id;
+    @JsonProperty
     String name;
 
     @Override
