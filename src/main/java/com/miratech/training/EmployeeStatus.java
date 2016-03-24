@@ -11,3 +11,8 @@ public interface EmployeeStatus {
     final static  int BUSY = 2;
     final static  int VACATION = 3;
 }
+
+
+// Рассмотрите возможность изменить на - public enum EmployeeStatus {FREE, BUSY, VACATION}
+//                                     WBR, Oleg Niemkevych, member of the team "Manager"
+
