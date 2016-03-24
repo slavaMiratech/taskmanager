@@ -164,13 +164,13 @@ public class ManagerImpl implements Manager {
         }
 
         try {
-            while(!taskCompleted.equals(getTaskStatus(task))) {
-                log.info("Waiting a task " + task.getDescription() + " when it is closed. Smoking...");
-                //task.wait();
-                Thread.sleep(1000);
+            synchronized (task) {
+                if (!taskCompleted.equals(getTaskStatus(task))) {
+                    log.info("Waiting a task " + task.getDescription() + " when it is closed. Smoking...");
+                    task.wait();
+                }
+                log.info("A task " + task.getDescription() + " has completed.");
             }
-
-            log.info("A task " + task.getDescription() + " has completed.");
         } catch (InterruptedException e) {
             log.info("waitTaskComplete interrupted...");
             e.printStackTrace();
@@ -190,14 +190,14 @@ public class ManagerImpl implements Manager {
         }
 
         try {
-            while (!isEmployeeFree(emp)) {
-                log.info("Waiting an employee " + emp + " when he is free. Smoking...");
-                //emp.wait();
-                Thread.sleep(1000);
+            synchronized (emp) {
+                if (!isEmployeeFree(emp)) {
+                    log.info("Waiting an employee " + emp + " when he is free. Smoking...");
+                    emp.wait();
+                }
+                log.info("An employee " + emp + " is free now.");
             }
-
-            log.info("An employee " + emp + " is free now.");
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e1) {
             log.info("waitEmployee interrupted...");
         }
     }
