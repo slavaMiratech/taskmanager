@@ -1,0 +1,19 @@
+[{
+  "id": 0,
+  "name": "Agent11",
+  "managerId": 5,
+  "status": "BUSY"
+},
+  {
+    "id": 1,
+    "name": "Agent12",
+    "managerId": 5,
+    "status": "VACATION"
+  },
+  {
+    "id": 2,
+    "name": "Agent21",
+    "managerId": 7,
+    "status": "FREE"
+  }
+]

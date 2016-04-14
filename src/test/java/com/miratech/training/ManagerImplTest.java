@@ -1,11 +1,8 @@
 package com.miratech.training;
 
-import com.miratech.service.SayService;
-import com.miratech.service.SayServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Date;
 import java.util.Properties;
 
 import static java.lang.Thread.sleep;
@@ -38,7 +35,7 @@ public class ManagerImplTest {
 
     @Test
     public void testAddRemoveEmployee() throws Exception {
-        Employee emp = new EmployeeImp();
+        Employee emp = new EmployeeImpl();
         Assert.assertNotNull(emp);
         manager.hireEmployee(emp);
         Assert.assertTrue(manager.getEmployeeList().contains(emp));
@@ -54,7 +51,7 @@ public class ManagerImplTest {
 
         // Чужой класс EmployeeImp прописан не полностью
         // Чтобы проверить тестирование - воспользуемся анонимным классом-потомком с необходимыми реализованными методами
-        final Employee emp = new EmployeeImp() {
+        final Employee emp = new EmployeeImpl() {
             EmployeeStatus status;
             @Override
             public EmployeeStatus getEmployeeStatus() {

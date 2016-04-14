@@ -20,7 +20,7 @@ public interface Employee {
 
     void setEmployeeStatus(EmployeeStatus employeeStatus);
 
-    void action(Task task, EmployeeTaskAction action);
+    void action(Task task, TaskStatus action);
 
     List<Task> getTaskList(TaskStatus taskStatus);
 }

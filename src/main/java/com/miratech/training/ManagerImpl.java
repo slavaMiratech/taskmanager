@@ -29,8 +29,8 @@ public class ManagerImpl implements Manager {
     public static final TaskStatus taskCompleted = new TaskStatus() { /* Completed */};
 
 
-    public static EmployeeStatus employeeIsBusy = new EmployeeStatus() { /* Busy */};
-    public static EmployeeStatus employeeIsFree = new EmployeeStatus() { /* Free */};
+//    public static EmployeeStatus employeeIsBusy = new EmployeeStatus() { /* Busy */};
+//    public static EmployeeStatus employeeIsFree = new EmployeeStatus() { /* Free */};
 
     static int maxId = 0;
     @JsonProperty

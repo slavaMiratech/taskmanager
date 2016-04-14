@@ -3,19 +3,12 @@ package com.miratech.training;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.miratech.training.EmployeeImp;
-import com.miratech.training.Manager;
-import com.miratech.training.ManagerImpl;
-import com.miratech.training.TaskImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by VSytnyk on 21.03.2016.
@@ -29,7 +22,7 @@ public class Container {
 
     List<ManagerImpl> managers;
     List<TaskImpl> tasks;
-    List<EmployeeImp> employees;
+    List<EmployeeImpl> employees;
 
     public Container() throws IOException {
         init();
